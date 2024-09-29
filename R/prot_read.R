@@ -29,7 +29,6 @@
 #' @importFrom stringr str_count
 #' @importFrom tidyr separate
 #'
-#' @export
 
 read_prot = function(file){
   dado = read_fwf(file)

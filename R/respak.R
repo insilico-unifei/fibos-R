@@ -77,7 +77,6 @@ osp = function(file){
 #' @importFrom readr read_table
 #'
 #'
-#' @export
 read_osp = function(prot_file){
   if (endsWith(prot_file, ".pak") == FALSE){
     prot_file = paste(prot_file,".pak",sep = "")

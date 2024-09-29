@@ -10,7 +10,7 @@
 #' @author Patrick Fleming (Pat.Fleming@jhu.edu)
 #'
 create_folder = function(pdbname){
-  pdbname = paste0(pdbname)
+  #pdbname = paste0(pdbname)
   if(!file.exists(pdbname)){
     dir.create(pdbname)
   }

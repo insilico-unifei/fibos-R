@@ -16,6 +16,7 @@
 #'
 #' @importFrom stringr str_sub
 #' @importFrom withr with_tempdir
+#' @importFrom bio3d read.pdb
 #'
 #' @author Carlos Henrique da Silveira (carlos.silveira@unifei.edu.br)
 #' @author Herson Hebert Mendes Soares (hersonhebert@hotmail.com)
@@ -26,25 +27,33 @@
 occluded_surface = function(pdb, method = "FIBOS"){
   remove_files()
   source_path = getwd()
-  if(!dir.exists("fibos_files")){
-    dir.create("fibos_files")
-  }
-  withr::with_tempdir({
-  pdbname = getwd()
-  #pdbname = tempdir()
-  #create_folder(pdbname)
-  meth = 0
+  change = FALSE
   if(grepl(".pdb", pdb) ==  FALSE){
     arq_aux = paste(pdb,".pdb", sep = "")
     if(file.exists(arq_aux)){
       file.remove(arq_aux)
     }
-  }
-  else{
+  }else{
+    name_pdb = pdb
+    name_pdb = substr(name_pdb, nchar(name_pdb)-7, nchar(name_pdb))
     if(file.exists(pdb) == FALSE){
-      stop("File not Found: ", pdb)
+      stop("File not Found: ", name_pdb)
     }
+    pdb_aux = read.pdb(pdb)
+    pdb = name_pdb
+    change = TRUE
   }
+  if(!dir.exists("fibos_files")){
+    dir.create("fibos_files")
+  }
+  withr::with_tempdir({
+  pdbname = getwd()
+#  pdbname = tempdir()
+# setwd(pdbname)
+  if(change == TRUE){
+    write.pdb(pdb_aux,pdb)
+  }
+  meth = 0
   path = system.file("extdata", "radii", package = "FIBOS")
   file.copy(from = path, to = getwd())
   interval = clean_pdb(pdb)
@@ -61,7 +70,6 @@ occluded_surface = function(pdb, method = "FIBOS"){
   }
   execute(1, iresl, meth)
   remove_files()
-
   pdb_name = change_files(pdb)
   arquivos = list.files(pdbname, full.names = TRUE)
   source_path = paste0(source_path,"/fibos_files","")
