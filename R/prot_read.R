@@ -31,7 +31,7 @@
 #'
 
 read_prot = function(file){
-  dado = read_fwf(file)
+  dado = read_fwf(file,show_col_types = FALSE)
   dado = filter(dado, X1 == "INF")
   dado$X7 = NULL
   dado = rename(dado, INF = X1, ATOM = X2, NUMBER_POINTS = X3, AREA = X4, RAYLENGTH = X5, DISTANCE = X6)

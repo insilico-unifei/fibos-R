@@ -68,10 +68,13 @@ occluded_surface = function(pdb, method = "FIBOS"){
   if(!(toupper(method) == "OS")&!(toupper(method) == "FIBOS")){
     stop("Wrong Method")
   }
+  suppressMessages({
   execute(1, iresl, meth)
+  })
   remove_files()
   pdb_name = change_files(pdb)
   arquivos = list.files(pdbname, full.names = TRUE)
+  arquivos <- grep("\\.pdb$", arquivos, invert = TRUE, value = TRUE)
   source_path = paste0(source_path,"/fibos_files","")
   file.copy(arquivos,source_path,overwrite = TRUE)
   return(read_prot(pdb_name))
