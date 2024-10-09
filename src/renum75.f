@@ -88,7 +88,7 @@ c        READ(5,500) FNAME
         ELSE IF ( ( age .EQ. 'new' ) .OR. ( age .EQ. 'NEW' ) ) THEN
             OPEN ( UNIT = lunit, FILE = fname, STATUS = 'NEW')
         END IF
-        WRITE(6,630) fname, age
+C        WRITE(6,630) fname, age
 
 500     FORMAT ( A30 )
 600     FORMAT ( 2x,A, '---->',$ )
