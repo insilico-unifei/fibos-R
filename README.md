@@ -20,9 +20,9 @@ Python version here: [FIBOS-PY (BETA)](https://github.com/insilico-unifei/FIBOS-
 FIBOS was designed to be multiplatform and run on Linux, Windows and Mac.
 However, it has been tested on the following versions:
 
-- **Linux**: Ubuntu 20.04
-- **Windows**: 
-- **Mac**: 
+- **Linux**: Ubuntu ($\geq$ 20.04)
+- **Windows**: Windows 11
+- **Mac**: MacOS 15.0.1
 
 
 ## Instalation
