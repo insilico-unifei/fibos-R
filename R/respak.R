@@ -53,7 +53,7 @@ osp = function(file){
         dyn.unload(system.file("libs/x86", "FIBOS.dll", package = "FIBOS"))
       }
     }
-    osp_data = readr::read_table("prot.pak")
+    osp_data = readr::read_table("prot.pak",show_col_types = FALSE)
     file = gsub(".srf","",name)
     file = paste(file,".pak",sep = "")
     file.rename("prot.srf",name)
@@ -84,6 +84,6 @@ read_osp = function(prot_file){
   if(file.exists(prot_file) ==  FALSE){
     stop("File not Found: ", prot_file)
   }
-  osp_data = readr::read_table(file)
+  osp_data = readr::read_table(file, show_col_types = FALSE)
   return(osp_data)
 }
