@@ -4,20 +4,20 @@ editor_options:
     wrap: sentence
 ---
 
-# FIBOS-R (BETA)
+# fibos-R (BETA)
 
 The Occluded Surface (OS) algorithm is a widely used approach for analyzing atomic packing in biomolecules. 
-Here, we introduce FIBOS, an R and Python package that extends the OS methodology with enhancements. 
-FIBOS integrates efficient Fortran code from the original OS implementation and introduces an innovation: 
+Here, we introduce **fibos**, an R and Python package that extends the OS methodology with enhancements. 
+It integrates efficient Fortran code from the original OS implementation and introduces an innovation: 
 the use of Fibonacci spirals for surface point distribution. This modification reduces anisotropy and 
 ensures a more uniform and even distribution of surface dots, improving the accuracy
 of the algorithm.
 
-Python version here: [FIBOS-PY (BETA)](https://github.com/insilico-unifei/FIBOS-PY.git).
+Python version here: [fibos-py (BETA)](https://github.com/insilico-unifei/fibos-py.git).
 
 ## Operating Systems
 
-FIBOS was designed to be multiplatform and run on Linux, Windows and Mac.
+fibos was designed to be multiplatform and run on Linux, Windows and Mac.
 However, it has been tested on the following versions:
 
 - **Linux**: Ubuntu ($\geq$ 20.04)
@@ -30,7 +30,7 @@ However, it has been tested on the following versions:
 ```         
 install.packages("devtools"")
 library("devtools")
-install_github("https://github.com/insilico-unifei/FIBOS-R.git") 
+install_github("https://github.com/insilico-unifei/fibos-R.git") 
 ```
 
 These additional packages may be required:
@@ -58,7 +58,7 @@ parameter and returns the results as a table (tibble) summarized by residue.
   library(bio3d)
   library(fs)
   library(furrr)
-  library(FIBOS-R)
+  library(fibos)
   
   # source of PDB files
   folder <- "PDB"
@@ -110,7 +110,7 @@ parameter and returns the results as a table (tibble) summarized by residue.
 ```
 
 ### More complex example:
-[Here](https://github.com/insilico-unifei/FIBOS-R-case-study-supp.git) we show a case study, aiming 
+[Here](https://github.com/insilico-unifei/fibos-R-case-study-supp.git) we show a case study, aiming 
 to compare the packing density between experimentally determined 
 structures and the same structures predicted by AlphaFold (AF).
 

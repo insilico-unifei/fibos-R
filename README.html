@@ -353,20 +353,20 @@ display: none;
 
 
 <div id="fibos-r-beta" class="section level1">
-<h1>FIBOS-R (BETA)</h1>
+<h1>fibos-R (BETA)</h1>
 <p>The Occluded Surface (OS) algorithm is a widely used approach for
-analyzing atomic packing in biomolecules. Here, we introduce FIBOS, an R
-and Python package that extends the OS methodology with enhancements.
-FIBOS integrates efficient Fortran code from the original OS
-implementation and introduces an innovation: the use of Fibonacci
-spirals for surface point distribution. This modification reduces
-anisotropy and ensures a more uniform and even distribution of surface
-dots, improving the accuracy of the algorithm.</p>
-<p>Python version here: <a href="https://github.com/insilico-unifei/FIBOS-PY.git">FIBOS-PY
+analyzing atomic packing in biomolecules. Here, we introduce
+<strong>fibos</strong>, an R and Python package that extends the OS
+methodology with enhancements. It integrates efficient Fortran code from
+the original OS implementation and introduces an innovation: the use of
+Fibonacci spirals for surface point distribution. This modification
+reduces anisotropy and ensures a more uniform and even distribution of
+surface dots, improving the accuracy of the algorithm.</p>
+<p>Python version here: <a href="https://github.com/insilico-unifei/fibos-py.git">fibos-py
 (BETA)</a>.</p>
 <div id="operating-systems" class="section level2">
 <h2>Operating Systems</h2>
-<p>FIBOS was designed to be multiplatform and run on Linux, Windows and
+<p>fibos was designed to be multiplatform and run on Linux, Windows and
 Mac. However, it has been tested on the following versions:</p>
 <ul>
 <li><strong>Linux</strong>: Ubuntu (<span class="math inline">\(\geq\)</span> 20.04)</li>
@@ -378,7 +378,7 @@ Mac. However, it has been tested on the following versions:</p>
 <h2>Instalation</h2>
 <pre><code>install.packages(&quot;devtools&quot;&quot;)
 library(&quot;devtools&quot;)
-install_github(&quot;https://github.com/insilico-unifei/FIBOS-R.git&quot;) </code></pre>
+install_github(&quot;https://github.com/insilico-unifei/fibos-R.git&quot;) </code></pre>
 <p>These additional packages may be required:</p>
 <pre><code>install.packages(&quot;tidyverse&quot;, &quot;bio3d&quot;, &quot;fs&quot;, &quot;furrr&quot;)</code></pre>
 </div>
@@ -402,7 +402,7 @@ results as a table (tibble) summarized by residue.</p></li>
   library(bio3d)
   library(fs)
   library(furrr)
-  library(FIBOS-R)
+  library(fibos)
   
   # source of PDB files
   folder &lt;- &quot;PDB&quot;
@@ -454,7 +454,7 @@ results as a table (tibble) summarized by residue.</p></li>
 </div>
 <div id="more-complex-example" class="section level3">
 <h3>More complex example:</h3>
-<p><a href="https://github.com/insilico-unifei/FIBOS-R-case-study-supp.git">Here</a>
+<p><a href="https://github.com/insilico-unifei/fibos-R-case-study-supp.git">Here</a>
 we show a case study, aiming to compare the packing density between
 experimentally determined structures and the same structures predicted
 by AlphaFold (AF).</p>
