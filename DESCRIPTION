@@ -1,6 +1,6 @@
-Package: FIBOS
-Title: FIBOS
-Version: 1.0.0.2
+Package: fibos
+Title: fibos
+Version: 1.0.0.3
 Authors@R: c(
             person("Carlos", "Silveira", email = "carlos.silveira@unifei.edu.br", role = "cre"),
             person("Herson", "Hebert", email = "hersonhebert@hotmail.com", role = "aut"),
