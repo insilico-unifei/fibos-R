@@ -352,8 +352,8 @@ display: none;
 </div>
 
 
-<div id="fibos-r-beta" class="section level1">
-<h1>fibos-R (BETA)</h1>
+<div id="r-fibos-beta" class="section level1">
+<h1>R fibos (BETA)</h1>
 <p>The Occluded Surface (OS) algorithm is a widely used approach for
 analyzing atomic packing in biomolecules. Here, we introduce
 <strong>fibos</strong>, an R and Python package that extends the OS
@@ -362,8 +362,7 @@ the original OS implementation and introduces an innovation: the use of
 Fibonacci spirals for surface point distribution. This modification
 reduces anisotropy and ensures a more uniform and even distribution of
 surface dots, improving the accuracy of the algorithm.</p>
-<p>Python version here: <a href="https://github.com/insilico-unifei/fibos-py.git">fibos-py
-(BETA)</a>.</p>
+<p>Python fibos version: <a href="https://github.com/insilico-unifei/fibos-py.git" class="uri">https://github.com/insilico-unifei/fibos-py.git</a>.</p>
 <div id="operating-systems" class="section level2">
 <h2>Operating Systems</h2>
 <p>fibos was designed to be multiplatform and run on Linux, Windows and
@@ -376,11 +375,12 @@ Mac. However, it has been tested on the following versions:</p>
 </div>
 <div id="instalation" class="section level2">
 <h2>Instalation</h2>
+<p>These additional packages may be required:</p>
+<pre><code>install.packages(&quot;tidyverse&quot;, &quot;bio3d&quot;, &quot;fs&quot;, &quot;furrr&quot;)</code></pre>
+<p>Install fibos:</p>
 <pre><code>install.packages(&quot;devtools&quot;&quot;)
 library(&quot;devtools&quot;)
 install_github(&quot;https://github.com/insilico-unifei/fibos-R.git&quot;) </code></pre>
-<p>These additional packages may be required:</p>
-<pre><code>install.packages(&quot;tidyverse&quot;, &quot;bio3d&quot;, &quot;fs&quot;, &quot;furrr&quot;)</code></pre>
 </div>
 <div id="main-functions" class="section level2">
 <h2>Main functions:</h2>
@@ -411,19 +411,19 @@ results as a table (tibble) summarized by residue.</p></li>
   if (!dir.exists(folder)) fs::dir_create(folder)
   
   # PDB ids
-  pdb.ids = c(&quot;8RXN&quot;,&quot;1ROP&quot;) 
+  pdb_ids = c(&quot;8RXN&quot;,&quot;1ROP&quot;) 
   
   # Get PDB from RCSB, put it in folder and return path to it
-  pdb.path &lt;- pdb.ids |&gt; bio3d::get.pdb(path = folder) 
+  pdb_path &lt;- pdb_ids |&gt; bio3d::get.pdb(path = folder) 
   
   # Calculate FIBOS per atom per PDBid, create SRF files in fibos_files folder and 
-  # return FIBOS in a list of tables in pdb.fibos
-  plan(multisession, workers = 2) # number of cores, if parallel
-  pdb.fibos &lt;- pdb.path |&gt; furrr::future_map(\(x) occluded_surface(x, method = &quot;FIBOS&quot;), 
+  # return FIBOS in a list of tables in pdb_fibos
+  plan(multisession, workers = 2) # comment this to serial
+  pdb_fibos &lt;- pdb_path |&gt; furrr::future_map(\(x) occluded_surface(x, method = &quot;FIBOS&quot;), 
                                             .options = furrr_options(seed = 123))
   
-  # Show first 3 rows of first table in pdb.fibos list
-  pdb.fibos[[1]] |&gt; utils::head(3)
+  # Show first 3 rows of first table in pdb_fibos list
+  pdb_fibos[[1]] |&gt; utils::head(3)
   
   # A tibble: 3 × 6
     INF   ATOM                       NUMBER_POINTS  AREA RAYLENGTH DISTANCE
@@ -433,14 +433,14 @@ results as a table (tibble) summarized by residue.</p></li>
   3 INF   MET    1@CA__&gt;PRO  15@CB__             9  1.86     0.246     4.09
   
   # Mounts srf paths
-  srf.path &lt;- pdb.ids |&gt; map(\(x) fs::path(&quot;fibos_files&quot;, paste0(&quot;prot_&quot;,x), 
+  srf_path &lt;- pdb_ids |&gt; map(\(x) fs::path(&quot;fibos_files&quot;, paste0(&quot;prot_&quot;,x), 
                                            ext = &quot;srf&quot;)) |&gt; unlist()
   
   # Consolidate FIBOS by residue in a list of tables in pdb.osp
-  pdb.osp &lt;- srf.path |&gt; purrr::map(\(x) osp(x))
+  pdb_osp &lt;- srf_path |&gt; purrr::map(\(x) osp(x))
   
   # Show first 3 rows of first table in pdb.osp list
-  pdb.osp[[1]] |&gt; utils::head(3)
+  pdb_osp[[1]] |&gt; utils::head(3)
   
   # A tibble: 3 × 5
     Resnum Resname    OS `os*[1-raylen]`   OSP
@@ -455,9 +455,9 @@ results as a table (tibble) summarized by residue.</p></li>
 <div id="more-complex-example" class="section level3">
 <h3>More complex example:</h3>
 <p><a href="https://github.com/insilico-unifei/fibos-R-case-study-supp.git">Here</a>
-we show a case study, aiming to compare the packing density between
-experimentally determined structures and the same structures predicted
-by AlphaFold (AF).</p>
+we show a case study (in R only), aiming to compare the packing density
+between experimentally determined structures and the same structures
+predicted by AlphaFold (AF).</p>
 </div>
 </div>
 <div id="authors" class="section level2">

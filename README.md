@@ -4,7 +4,7 @@ editor_options:
     wrap: sentence
 ---
 
-# fibos-R (BETA)
+# R fibos (BETA)
 
 The Occluded Surface (OS) algorithm is a widely used approach for analyzing atomic packing in biomolecules. 
 Here, we introduce **fibos**, an R and Python package that extends the OS methodology with enhancements. 
@@ -13,7 +13,7 @@ the use of Fibonacci spirals for surface point distribution. This modification r
 ensures a more uniform and even distribution of surface dots, improving the accuracy
 of the algorithm.
 
-Python version here: [fibos-py (BETA)](https://github.com/insilico-unifei/fibos-py.git).
+Python fibos version: https://github.com/insilico-unifei/fibos-py.git.
 
 ## Operating Systems
 
@@ -27,16 +27,18 @@ However, it has been tested on the following versions:
 
 ## Instalation
 
-```         
-install.packages("devtools"")
-library("devtools")
-install_github("https://github.com/insilico-unifei/fibos-R.git") 
-```
-
 These additional packages may be required:
 
 ```         
 install.packages("tidyverse", "bio3d", "fs", "furrr")
+```
+
+Install fibos:
+
+```         
+install.packages("devtools"")
+library("devtools")
+install_github("https://github.com/insilico-unifei/fibos-R.git") 
 ```
 
 ## Main functions:
@@ -67,19 +69,19 @@ parameter and returns the results as a table (tibble) summarized by residue.
   if (!dir.exists(folder)) fs::dir_create(folder)
   
   # PDB ids
-  pdb.ids = c("8RXN","1ROP") 
+  pdb_ids = c("8RXN","1ROP") 
   
   # Get PDB from RCSB, put it in folder and return path to it
-  pdb.path <- pdb.ids |> bio3d::get.pdb(path = folder) 
+  pdb_path <- pdb_ids |> bio3d::get.pdb(path = folder) 
   
   # Calculate FIBOS per atom per PDBid, create SRF files in fibos_files folder and 
-  # return FIBOS in a list of tables in pdb.fibos
-  plan(multisession, workers = 2) # number of cores, if parallel
-  pdb.fibos <- pdb.path |> furrr::future_map(\(x) occluded_surface(x, method = "FIBOS"), 
+  # return FIBOS in a list of tables in pdb_fibos
+  plan(multisession, workers = 2) # comment this to serial
+  pdb_fibos <- pdb_path |> furrr::future_map(\(x) occluded_surface(x, method = "FIBOS"), 
                                             .options = furrr_options(seed = 123))
   
-  # Show first 3 rows of first table in pdb.fibos list
-  pdb.fibos[[1]] |> utils::head(3)
+  # Show first 3 rows of first table in pdb_fibos list
+  pdb_fibos[[1]] |> utils::head(3)
   
   # A tibble: 3 × 6
     INF   ATOM                       NUMBER_POINTS  AREA RAYLENGTH DISTANCE
@@ -89,14 +91,14 @@ parameter and returns the results as a table (tibble) summarized by residue.
   3 INF   MET    1@CA__>PRO  15@CB__             9  1.86     0.246     4.09
   
   # Mounts srf paths
-  srf.path <- pdb.ids |> map(\(x) fs::path("fibos_files", paste0("prot_",x), 
+  srf_path <- pdb_ids |> map(\(x) fs::path("fibos_files", paste0("prot_",x), 
                                            ext = "srf")) |> unlist()
   
   # Consolidate FIBOS by residue in a list of tables in pdb.osp
-  pdb.osp <- srf.path |> purrr::map(\(x) osp(x))
+  pdb_osp <- srf_path |> purrr::map(\(x) osp(x))
   
   # Show first 3 rows of first table in pdb.osp list
-  pdb.osp[[1]] |> utils::head(3)
+  pdb_osp[[1]] |> utils::head(3)
   
   # A tibble: 3 × 5
     Resnum Resname    OS `os*[1-raylen]`   OSP
@@ -110,9 +112,9 @@ parameter and returns the results as a table (tibble) summarized by residue.
 ```
 
 ### More complex example:
-[Here](https://github.com/insilico-unifei/fibos-R-case-study-supp.git) we show a case study, aiming 
-to compare the packing density between experimentally determined 
-structures and the same structures predicted by AlphaFold (AF).
+[Here](https://github.com/insilico-unifei/fibos-R-case-study-supp.git) we show a 
+case study  (in R only), aiming to compare the packing density between experimentally 
+determined structures and the same structures predicted by AlphaFold (AF).
 
 ## Authors
 
