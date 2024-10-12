@@ -35,22 +35,22 @@ osp = function(file){
     }
     system_arch_1 = Sys.info()
     if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
-      dyn.load(system.file("libs", "FIBOS.so", package = "FIBOS"))
+      dyn.load(system.file("libs", "fibos.so", package = "fibos"))
     } else if(system_arch_1["sysname"] == "Windows"){
       if(system_arch_1["machine"] == "x86-64"){
-        dyn.load(system.file("libs/x64", "FIBOS.dll", package = "FIBOS"))
+        dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
       } else{
-        dyn.load(system.file("libs/x86", "FIBOS.dll", package = "FIBOS"))
+        dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
       }
     }
-    .Fortran("respak", PACKAGE = "FIBOS")
+    .Fortran("respak", PACKAGE = "fibos")
     if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
-      dyn.unload(system.file("libs", "FIBOS.so", package = "FIBOS"))
+      dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
     } else if(system_arch_1["sysname"] == "Windows"){
       if(system_arch_1["machine"] == "x86-64"){
-        dyn.unload(system.file("libs/x64", "FIBOS.dll", package = "FIBOS"))
+        dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
       } else{
-        dyn.unload(system.file("libs/x86", "FIBOS.dll", package = "FIBOS"))
+        dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
       }
     }
     osp_data = readr::read_table("prot.pak",show_col_types = FALSE)
