@@ -30,15 +30,15 @@ clean_pdb = function(pdb){
   clean("temp1.pdb")
   system_arch_1 = Sys.info()
   if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
-    dyn.load(system.file("libs", "FIBOS.so", package = "FIBOS"))
+    dyn.load(system.file("libs", "fibos.so", package = "fibos"))
   } else if(system_arch_1["sysname"] == "Windows"){
     if(system_arch_1["machine"] == "x86-64"){
-      dyn.load(system.file("libs/x64", "FIBOS.dll", package = "FIBOS"))
+      dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
     } else{
-      dyn.load(system.file("libs/x86", "FIBOS.dll", package = "FIBOS"))
+      dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
     }
   }
-  .Fortran("renum", PACKAGE = "FIBOS")
+  .Fortran("renum", PACKAGE = "fibos")
   file.rename("new.pdb", "temp.pdb")
   file.remove("temp1.cln")
   pdb = bio3d::read.pdb("temp.pdb")
@@ -51,12 +51,12 @@ clean_pdb = function(pdb){
   iresl = as.integer(pdb$atom$resno[length(pdb$atom$resno)])
   interval = c(iresf,iresl)
   if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
-    dyn.unload(system.file("libs", "FIBOS.so", package = "FIBOS"))
+    dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
   } else if(system_arch_1["sysname"] == "Windows"){
     if(system_arch_1["machine"] == "x86-64"){
-      dyn.unload(system.file("libs/x64", "FIBOS.dll", package = "FIBOS"))
+      dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
     } else{
-      dyn.unload(system.file("libs/x86", "FIBOS.dll", package = "FIBOS"))
+      dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
     }
   }
   file.remove("temp1.pdb")

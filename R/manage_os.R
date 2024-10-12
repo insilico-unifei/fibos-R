@@ -54,7 +54,7 @@ occluded_surface = function(pdb, method = "FIBOS"){
     write.pdb(pdb_aux,pdb)
   }
   meth = 0
-  path = system.file("extdata", "radii", package = "FIBOS")
+  path = system.file("extdata", "radii", package = "fibos")
   file.copy(from = path, to = getwd())
   interval = clean_pdb(pdb)
   iresf = interval[1]
