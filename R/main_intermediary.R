@@ -69,7 +69,7 @@ execute = function(iresf, iresl, method){
     if(system_arch["machine"] == "x86-64"){
       dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
     } else{
-      dyn.unload(system.file("libs/x86", "FIBOS.dll", package = "fibos"))
+      dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
     }
   }
 }
