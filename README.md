@@ -27,8 +27,19 @@ However, it has been tested on the following versions:
 
 ## Instalation
 
-These additional packages may be required:
+On Windows, install RTools:
+```
+https://cran.r-project.org/bin/windows/Rtools/
+```
 
+Also on Windows, set as administrator the PATH to the R bin folder:
+(x.x.x with the actual version number of your R installation)
+```
+setx PATH "%PATH%;C:\Program Files\R\R-x.x.x\bin"
+
+```
+
+These additional packages may be required:
 ```         
 install.packages("tidyverse", "bio3d", "fs", "furrr")
 ```
