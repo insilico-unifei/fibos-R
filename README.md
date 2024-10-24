@@ -73,7 +73,7 @@ library(fibos)
 pdb_fibos <- occluded_surface("1fib", method = "FIBOS")
 
 # Show first 3 rows of pdb_fibos table
-print(pdb_fibos |> utils::head(3))
+pdb_fibos |> utils::head(3) |> print()
 
 # A tibble: 3 × 6
 #   ATOM                       NUMBER_POINTS  AREA RAYLENGTH DISTANCE
@@ -86,7 +86,7 @@ print(pdb_fibos |> utils::head(3))
 pdb_osp <- osp("fibos_files/prot_1fib.srf")
 
 # Show first 3 rows of pdb_osp table
-print(pdb_osp |> utils::head(3) )
+pdb_osp |> utils::head(3) |> print()
 
 # A tibble: 3 × 5
 #   Resnum Resname    OS `os*[1-raylen]`   OSP
@@ -134,7 +134,7 @@ pdb_fibos <- pdb_paths |> furrr::future_map(\(x) occluded_surface(x, method = "F
 options(mc.cores = my_default_mccores)
 
 # Show first 3 rows of first pdb_fibos table
-pdb_fibos[[1]] |> utils::head(3)
+pdb_fibos[[1]] |> utils::head(3) |> print()
 
 # Prepare paths for the generated .srf files in folder fibos_files
 srf_paths <- pdb_ids |> map(\(x) fs::path("fibos_files", paste0("prot_",x), 
@@ -145,7 +145,7 @@ srf_paths <- pdb_ids |> map(\(x) fs::path("fibos_files", paste0("prot_",x),
 pdb_osp <- srf_paths |> purrr::map(\(x) osp(x))
 
 # Show first 3 rows of the first pdb_osp table
-pdb_osp[[1]] |> utils::head(3)
+pdb_osp[[1]] |> utils::head(3) |> print()
 
 # Rename the fibos_files folder to preserve it and prevent overwriting
 file.rename("fibos_files","fibos_files_test")
