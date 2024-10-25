@@ -66,7 +66,7 @@ parameter and returns the results as a table (tibble) summarized by residue.
 
 ### Quickstart:
 
-```  
+```R
 library(fibos)
 
 # Calculate FIBOS per atom and create .srf files in fibos_files folder
@@ -98,7 +98,7 @@ pdb_osp |> utils::head(3) |> print()
 
 ### A more complex example:
 
-```         
+```R     
 library(tidyverse)
 library(bio3d)
 library(fs)

@@ -404,13 +404,13 @@ results as a table (tibble) summarized by residue.</p></li>
 </ol>
 <div id="quickstart" class="section level3">
 <h3>Quickstart:</h3>
-<pre><code>library(fibos)
+<pre class="r"><code>library(fibos)
 
 # Calculate FIBOS per atom and create .srf files in fibos_files folder
 pdb_fibos &lt;- occluded_surface(&quot;1fib&quot;, method = &quot;FIBOS&quot;)
 
 # Show first 3 rows of pdb_fibos table
-print(pdb_fibos |&gt; utils::head(3))
+pdb_fibos |&gt; utils::head(3) |&gt; print()
 
 # A tibble: 3 × 6
 #   ATOM                       NUMBER_POINTS  AREA RAYLENGTH DISTANCE
@@ -423,7 +423,7 @@ print(pdb_fibos |&gt; utils::head(3))
 pdb_osp &lt;- osp(&quot;fibos_files/prot_1fib.srf&quot;)
 
 # Show first 3 rows of pdb_osp table
-print(pdb_osp |&gt; utils::head(3) )
+pdb_osp |&gt; utils::head(3) |&gt; print()
 
 # A tibble: 3 × 5
 #   Resnum Resname    OS `os*[1-raylen]`   OSP
@@ -434,7 +434,7 @@ print(pdb_osp |&gt; utils::head(3) )
 </div>
 <div id="a-more-complex-example" class="section level3">
 <h3>A more complex example:</h3>
-<pre><code>library(tidyverse)
+<pre class="r"><code>library(tidyverse)
 library(bio3d)
 library(fs)
 library(furrr)
@@ -469,7 +469,7 @@ pdb_fibos &lt;- pdb_paths |&gt; furrr::future_map(\(x) occluded_surface(x, metho
 options(mc.cores = my_default_mccores)
 
 # Show first 3 rows of first pdb_fibos table
-pdb_fibos[[1]] |&gt; utils::head(3)
+pdb_fibos[[1]] |&gt; utils::head(3) |&gt; print()
 
 # Prepare paths for the generated .srf files in folder fibos_files
 srf_paths &lt;- pdb_ids |&gt; map(\(x) fs::path(&quot;fibos_files&quot;, paste0(&quot;prot_&quot;,x), 
@@ -480,7 +480,7 @@ srf_paths &lt;- pdb_ids |&gt; map(\(x) fs::path(&quot;fibos_files&quot;, paste0(
 pdb_osp &lt;- srf_paths |&gt; purrr::map(\(x) osp(x))
 
 # Show first 3 rows of the first pdb_osp table
-pdb_osp[[1]] |&gt; utils::head(3)
+pdb_osp[[1]] |&gt; utils::head(3) |&gt; print()
 
 # Rename the fibos_files folder to preserve it and prevent overwriting
 file.rename(&quot;fibos_files&quot;,&quot;fibos_files_test&quot;)</code></pre>
