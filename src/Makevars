@@ -1,4 +1,5 @@
-FC = gfortran
-FFLAGS = -g -O2 -Wall
-FLIBS = -L/opt/homebrew/Cellar/gcc/14.1.0/lib/gcc/14 -lgfortran
-
+ifeq ($(shell uname), Darwin)
+    FC=/opt/homebrew/bin/gfortran
+    F77=/opt/homebrew/bin/gfortran
+    FLIBS=-L/opt/homebrew/opt/gfortran/lib -lgfortran
+endif
