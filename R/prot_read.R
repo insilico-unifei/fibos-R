@@ -26,7 +26,7 @@
 #' @importFrom readr read_fwf
 #' @importFrom dplyr filter
 #' @importFrom dplyr rename
-#' @import dplyr
+#' @importFrom dplyr %>%
 #' @importFrom stringr str_count
 #' @importFrom tidyr separate
 #'
