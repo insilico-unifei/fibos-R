@@ -10,7 +10,7 @@
 #'
 change_files = function(pdb_name){
   if(fs::path_ext(pdb_name) == "pdb"){
-    pdb_name = fs::path_file(pdb_name) %>% fs::path_ext_remove()
+    pdb_name = fs::path_file(pdb_name)
     pdb_name = fs::path_ext_remove(pdb_name)
   }
   name_pdb = pdb_name
