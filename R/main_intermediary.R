@@ -37,39 +37,41 @@ call_main = function(iresf, iresl, maxres, maxat){
   return(main_75)
 }
 
-execute = function(iresf, iresl, method){
+execute = function(iresf, iresl, method, verbose){
   maxres = 10000
   maxat = 50000
-  system_arch = Sys.info()
-  if(system_arch["sysname"] == "Linux" || system_arch["sysname"] == "Darwin"){
-    dyn.load(system.file("libs", "fibos.so", package = "fibos"))
-  } else if(system_arch["sysname"] == "Windows"){
-    if(system_arch["machine"] == "x86-64"){
-      dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
-    } else{
-      dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
-    }
+  if(verbose == TRUE){
+    print("Executando a main_75")
   }
   main_75 = call_main(iresf, iresl, maxres, maxat)
+  if(verbose == TRUE){
+    print("Main_75 calculada")
+  }
   for(ires in 1:(iresl)){
+    if(verbose == TRUE){
+      print("executando main_intermediate")
+    }
     intermediate = .Fortran("main_intermediate", main_75$x, main_75$y,
                             main_75$z, as.integer(ires), main_75$resnum,
                             main_75$natm, PACKAGE = "fibos")
+    if(verbose == TRUE){
+      print("Executando main_intermediate 01")
+    }
     .Fortran("main_intermediate01",x=as.double(rnorm(maxat)),
              y = as.double(rnorm(maxat)),
              z = as.double(rnorm(maxat)), as.integer(ires), main_75$resnum,
              main_75$natm, PACKAGE = "fibos")
+    if(verbose == TRUE){
+      print("Executando runSIMS")
+    }
     .Fortran("runSIMS", PACKAGE = "fibos", as.integer(method))
+    if(verbose == TRUE){
+      print("Executando surfcal")
+    }
     .Fortran("surfcal", PACKAGE = "fibos")
   }
-  .Fortran("main_intermediate02", as.integer(method),PACKAGE = "fibos")
-  if(system_arch["sysname"] == "Linux" || system_arch["sysname"] == "Darwin"){
-    dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
-  } else if(system_arch["sysname"] == "Windows"){
-    if(system_arch["machine"] == "x86-64"){
-      dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
-    } else{
-      dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
-    }
+  if(verbose == TRUE){
+    print("Executando main_intermediate02")
   }
+  .Fortran("main_intermediate02", as.integer(method),PACKAGE = "fibos")
 }

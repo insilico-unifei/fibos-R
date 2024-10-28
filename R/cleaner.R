@@ -20,27 +20,17 @@
 #' @importFrom readr read_file
 #'
 clean_pdb = function(pdb){
-   if(!grepl(".pdb",pdb)){
-     if (!file.exists(pdb)){
+   if(fs::path_ext(pdb) == "")
+     if (!fs::file_exists(pdb)){
        bio3d::get.pdb(pdb)
-       pdb = paste(pdb,".pdb",sep = "")
+       pdb = fs::path_ext_set(pdb,"pdb")
      }
-   }
-  file.copy(pdb,"temp1.pdb")
+  fs::file_copy(pdb,"temp1.pdb")
   clean("temp1.pdb")
   system_arch_1 = Sys.info()
-  if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
-    dyn.load(system.file("libs", "fibos.so", package = "fibos"))
-  } else if(system_arch_1["sysname"] == "Windows"){
-    if(system_arch_1["machine"] == "x86-64"){
-      dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
-    } else{
-      dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
-    }
-  }
-  .Fortran("renum", PACKAGE = "fibos")
-  file.rename("new.pdb", "temp.pdb")
-  file.remove("temp1.cln")
+  renum = .Fortran("renum", PACKAGE = "fibos")
+  fs::file_move("new.pdb", "temp.pdb")
+  fs::file_delete("temp1.cln")
   pdb = bio3d::read.pdb("temp.pdb")
   resno = pdb$atom$resno[1]-1
   for(i in 1:length(pdb$atom$resno)){
@@ -50,16 +40,7 @@ clean_pdb = function(pdb){
   iresf = as.integer(pdb$atom$resno[1])
   iresl = as.integer(pdb$atom$resno[length(pdb$atom$resno)])
   interval = c(iresf,iresl)
-  if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
-    dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
-  } else if(system_arch_1["sysname"] == "Windows"){
-    if(system_arch_1["machine"] == "x86-64"){
-      dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
-    } else{
-      dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
-    }
-  }
-  file.remove("temp1.pdb")
+  fs::file_delete("temp1.pdb")
   return(interval)
 }
 

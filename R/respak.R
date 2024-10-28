@@ -6,6 +6,9 @@
 #'                areas between the molecules of the analyzed protein.
 #'
 #' @param file Prot File (.srf).
+#' 
+#' @import dplyr
+#' @import stringr
 #'
 #' @seealso [read_prot()]
 #' @seealso [occluded_surface()]
@@ -21,43 +24,48 @@
 #'
 #' @export
 osp = function(file){
-  if(endsWith(file,".srf")==FALSE){
-    file = paste(file,".srf",sep = "")
+  wd = fs::path_wd()
+  if(fs::path_ext(file) == ""){
+    file = fs::path_ext_set(file,"srf")
   }
-  if(file.exists(file) == FALSE){
+  if(!fs::path_ext(file) == "srf"){
+    stop("Type of File Wrong")
+  }
+  if(fs::file_exists(file) == FALSE){
     stop("File not Found: ",file)
   }
-  name = file
-  if(file.exists(file)){
+  name_prot = file
+  if(fs::file_exists(file)){
     if(file!="prot.srf"){
-      file.rename(file,"prot.srf")
+      fs::file_copy(file,".")
+      file = fs::path_file(file)
+      file = fs::path(wd,file)
+      fs::file_move(file,"prot.srf")
       file = "prot.srf"
     }
     system_arch_1 = Sys.info()
     if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
-      dyn.load(system.file("libs", "fibos.so", package = "fibos"))
-    } else if(system_arch_1["sysname"] == "Windows"){
-      if(system_arch_1["machine"] == "x86-64"){
-        dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
-      } else{
-        dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
-      }
+      #dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+      dyn.load(fs::path_package("fibos","libs","fibos.so"))
+    } else{
+      path_lib = fs::path("libs",.Platform$r_arch)
+      dyn.load(fs::path_package("fibos",path_lib,"fibos.dll"))
     }
     .Fortran("respak", PACKAGE = "fibos")
     if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
-      dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
-    } else if(system_arch_1["sysname"] == "Windows"){
-      if(system_arch_1["machine"] == "x86-64"){
-        dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
-      } else{
-        dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
-      }
+      dyn.unload(fs::path_package("fibos","libs","fibos.so"))
+    } else{
+      path_lib = fs::path("libs",.Platform$r_arch)
+      dyn.unload(fs::path_package("fibos",path_lib,"fibos.dll"))
     }
     osp_data = readr::read_table("prot.pak",show_col_types = FALSE)
-    file = gsub(".srf","",name)
-    file = paste(file,".pak",sep = "")
-    file.rename("prot.srf",name)
-    file.rename("prot.pak",file)
+    name_prot = name_prot %>% fs::path_file() %>% fs::path_ext_remove()
+    name_prot = stringr::str_sub(name_prot, -4)
+    file = paste("respack_",name_prot,sep = "")
+    file = fs::path_ext_set(file,"pak")
+    fs::file_move("prot.pak",file)
+    remove_file = fs::dir_ls(glob = "*.srf")
+    fs::file_delete(remove_file)
     return(osp_data)
   }
   else{
