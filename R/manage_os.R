@@ -138,12 +138,12 @@ occluded_surface = function(pdb, method = "FIBOS", verbose = FALSE){
     if(verbose == TRUE){
       print("SRF copiado")
     }
-    fs::file_copy(copy_files,final_dest)
+    fs::file_copy(copy_files,final_dest, overwrite = TRUE)
     if(verbose == TRUE){
       print("Copiando .lst")
     }
     copy_files = fs::dir_ls(dest_temp,glob = "*.lst")
-    fs::file_copy(copy_files,final_dest)
+    fs::file_copy(copy_files,final_dest, overwrite = TRUE)
     if(verbose == TRUE){
       print("Definindo name_prot")
     }
