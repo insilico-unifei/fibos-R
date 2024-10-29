@@ -254,7 +254,6 @@ if (window.hljs) {
 
 
 
-
 <style type="text/css">
 .main-container {
 max-width: 940px;
@@ -276,9 +275,6 @@ outline: none;
 summary {
 display: list-item;
 }
-details > summary > p:only-child {
-display: inline;
-}
 pre code {
 padding: 0;
 }
@@ -297,17 +293,23 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+content: "";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "\e258";
-font-family: 'Glyphicons Halflings';
+content: "";
 border: none;
+}
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "";
+font-family: 'Glyphicons Halflings';
+display: inline-block;
+padding: 10px;
+border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -377,14 +379,15 @@ Mac. However, it has been tested on the following versions:</p>
 <h2>Instalation</h2>
 <p>On Windows, install RTools:</p>
 <pre><code>https://cran.r-project.org/bin/windows/Rtools/</code></pre>
-<p>Also on Windows, set as administrator the PATH to the R bin folder:
-(x.x.x with the actual version number of your R installation)</p>
+<p>Also, on Windows, set the PATH to the R bin folder as an
+administrator: (where x.x.x is the actual version number of your R
+installation)</p>
 <pre><code>setx PATH &quot;%PATH%;C:\Program Files\R\R-x.x.x\bin&quot;
 </code></pre>
 <p>These additional packages may be required:</p>
 <pre><code>install.packages(&quot;tidyverse&quot;, &quot;bio3d&quot;, &quot;fs&quot;, &quot;furrr&quot;)</code></pre>
 <p>Install fibos:</p>
-<pre><code>install.packages(&quot;devtools&quot;&quot;)
+<pre><code>install.packages(&quot;devtools&quot;)
 library(&quot;devtools&quot;)
 install_github(&quot;https://github.com/insilico-unifei/fibos-R.git&quot;) </code></pre>
 </div>

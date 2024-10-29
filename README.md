@@ -32,8 +32,8 @@ On Windows, install RTools:
 https://cran.r-project.org/bin/windows/Rtools/
 ```
 
-Also on Windows, set as administrator the PATH to the R bin folder:
-(x.x.x with the actual version number of your R installation)
+Also, on Windows, set the PATH to the R bin folder as an administrator:
+(where x.x.x is the actual version number of your R installation)
 ```
 setx PATH "%PATH%;C:\Program Files\R\R-x.x.x\bin"
 
@@ -47,7 +47,7 @@ install.packages("tidyverse", "bio3d", "fs", "furrr")
 Install fibos:
 
 ```         
-install.packages("devtools"")
+install.packages("devtools")
 library("devtools")
 install_github("https://github.com/insilico-unifei/fibos-R.git") 
 ```
