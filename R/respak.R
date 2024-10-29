@@ -59,7 +59,8 @@ osp = function(file){
       dyn.unload(fs::path_package("fibos",path_lib,"fibos.dll"))
     }
     osp_data = readr::read_table("prot.pak",show_col_types = FALSE)
-    name_prot = name_prot %>% fs::path_file() %>% fs::path_ext_remove()
+    name_prot = fs::path_file(name_prot) 
+    name_prot = fs::path_ext_remove(name_prot)
     name_prot = stringr::str_sub(name_prot, -4)
     file = paste("respack_",name_prot,sep = "")
     file = fs::path_ext_set(file,"pak")
