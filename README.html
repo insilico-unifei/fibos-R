@@ -254,6 +254,7 @@ if (window.hljs) {
 
 
 
+
 <style type="text/css">
 .main-container {
 max-width: 940px;
@@ -275,6 +276,9 @@ outline: none;
 summary {
 display: list-item;
 }
+details > summary > p:only-child {
+display: inline;
+}
 pre code {
 padding: 0;
 }
@@ -293,23 +297,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -375,21 +373,63 @@ Mac. However, it has been tested on the following versions:</p>
 <li><strong>Mac</strong>: MacOS 15.0.1</li>
 </ul>
 </div>
-<div id="instalation" class="section level2">
-<h2>Instalation</h2>
-<p>On Windows, install RTools:</p>
-<pre><code>https://cran.r-project.org/bin/windows/Rtools/</code></pre>
-<p>Also, on Windows, set the PATH to the R bin folder as an
-administrator: (where x.x.x is the actual version number of your R
-installation)</p>
-<pre><code>setx PATH &quot;%PATH%;C:\Program Files\R\R-x.x.x\bin&quot;
+<div id="compilers" class="section level2">
+<h2>Compilers</h2>
+<ul>
+<li>gfortran (<span class="math inline">\(\geq\)</span> 9.4)</li>
+<li>gcc (<span class="math inline">\(\geq\)</span> 9.4)</li>
+</ul>
+</div>
+<div id="r-versions" class="section level2">
+<h2>R versions</h2>
+<p>Tested on: 4.4.1</p>
+</div>
+<div id="instalations" class="section level2">
+<h2>Instalations</h2>
+<div id="preliminary" class="section level3">
+<h3>Preliminary</h3>
+<p>Some preliminary actions according to OS:</p>
+<div id="linux-ubuntu" class="section level4">
+<h4>Linux (Ubuntu)</h4>
+<p>Install gfortran:</p>
+<pre class="bash"><code>$ sudo apt install gfortran</code></pre>
+</div>
+<div id="windows" class="section level4">
+<h4>Windows</h4>
+<p>Install RTools from:</p>
+<pre><code>https://cran.r-project.org/bin/windows/Rtools</code></pre>
+<p>Install gfortran from (version <span class="math inline">\(\geq\)</span> 13.2):</p>
+<pre><code>http://www.equation.com/servlet/equation.cmd?fa=fortran</code></pre>
+<p>Set the PATH to the R bin folder as an administrator:</p>
+<pre class="bash"><code>$ setx PATH &quot;%PATH%;C:\Program Files\R\R-x.x.x\bin&quot;
 </code></pre>
-<p>These additional packages may be required:</p>
-<pre><code>install.packages(&quot;tidyverse&quot;, &quot;bio3d&quot;, &quot;fs&quot;, &quot;furrr&quot;)</code></pre>
-<p>Install fibos:</p>
-<pre><code>install.packages(&quot;devtools&quot;)
+<p>where x.x.x is the actual version number of your R installation.</p>
+</div>
+<div id="macos" class="section level4">
+<h4>MacOS</h4>
+<p>Install Homebrew:</p>
+<pre class="bash"><code>$ /bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/
+HEAD/install.sh)”</code></pre>
+<p>In your shell, set the PATH to include the Homebrew bin folder by
+adding it into the .zshrc file</p>
+<pre><code>export PATH= &quot;/path/to/homebrew/bin:$PATH&quot;
+</code></pre>
+<p>where “/path/to/homebrew/bin” is the actual homebrew path in your
+system. So, reload it:</p>
+<pre class="bash"><code>$ source ~/.zshrc
+</code></pre>
+<p>Some Mac versions (with Apple Silicon) may require Rosetta:</p>
+<pre class="bash"><code>$ softwareupdate --install-rosetta --agree-to-license</code></pre>
+<p>Install xcode and gfortran from:</p>
+<pre class="bash"><code>https://cran.r-project.org/bin/macosx/tools/</code></pre>
+</div>
+</div>
+<div id="install-fibos" class="section level3">
+<h3>Install fibos:</h3>
+<pre class="r"><code>install.packages(&quot;devtools&quot;)
 library(&quot;devtools&quot;)
 install_github(&quot;https://github.com/insilico-unifei/fibos-R.git&quot;) </code></pre>
+</div>
 </div>
 <div id="main-functions" class="section level2">
 <h2>Main functions:</h2>

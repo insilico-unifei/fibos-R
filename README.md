@@ -24,29 +24,84 @@ However, it has been tested on the following versions:
 - **Windows**: Windows 11
 - **Mac**: MacOS 15.0.1
 
+## Compilers
 
-## Instalation
+- gfortran ($\geq$ 9.4)
+- gcc ($\geq$ 9.4)
 
-On Windows, install RTools:
+## R versions
+
+Tested on: 4.4.1
+
+## Instalations
+
+### Preliminary
+
+Some preliminary actions according to OS:
+
+#### Linux (Ubuntu)
+Install gfortran:
+```bash
+$ sudo apt install gfortran
 ```
-https://cran.r-project.org/bin/windows/Rtools/
+
+#### Windows
+
+Install RTools from:
+```
+https://cran.r-project.org/bin/windows/Rtools
 ```
 
-Also, on Windows, set the PATH to the R bin folder as an administrator:
-(where x.x.x is the actual version number of your R installation)
+Install gfortran from (version $\geq$ 13.2):
 ```
-setx PATH "%PATH%;C:\Program Files\R\R-x.x.x\bin"
-
+http://www.equation.com/servlet/equation.cmd?fa=fortran
 ```
 
-These additional packages may be required:
-```         
-install.packages("tidyverse", "bio3d", "fs", "furrr")
+Set the PATH to the R bin folder as an administrator:
+
+```bash
+$ setx PATH "%PATH%;C:\Program Files\R\R-x.x.x\bin"
+
+```
+where x.x.x is the actual version number of your R installation.
+
+#### MacOS
+
+Install Homebrew:
+```bash
+$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/
+HEAD/install.sh)”
 ```
 
-Install fibos:
+In your shell, set the PATH to include the Homebrew bin folder by adding it into 
+the .zshrc file
 
-```         
+```
+export PATH= "/path/to/homebrew/bin:$PATH"
+
+```
+where "/path/to/homebrew/bin" is the actual homebrew path in your system. So, reload it:
+
+```bash
+$ source ~/.zshrc
+
+```
+
+Some Mac versions (with Apple Silicon) may require Rosetta:
+```bash
+$ softwareupdate --install-rosetta --agree-to-license
+```
+
+Install xcode and gfortran from:
+```bash
+https://cran.r-project.org/bin/macosx/tools/
+```
+
+
+
+### Install fibos:
+
+```R
 install.packages("devtools")
 library("devtools")
 install_github("https://github.com/insilico-unifei/fibos-R.git") 
