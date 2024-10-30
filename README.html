@@ -463,7 +463,7 @@ pdb_fibos |&gt; utils::head(3) |&gt; print()
 # 3 GLN    1@N___&gt;HIS   3@CG__             1  0.16     0.991     6.27
 
 # Calculate OSP metric per residue from .srf file in fibos_files folder
-pdb_osp &lt;- osp(&quot;fibos_files/prot_1fib.srf&quot;)
+pdb_osp &lt;- osp(fs::path(&quot;fibos_files&quot;,&quot;prot_1fib.srf&quot;))
 
 # Show first 3 rows of pdb_osp table
 pdb_osp |&gt; utils::head(3) |&gt; print()
@@ -477,45 +477,48 @@ pdb_osp |&gt; utils::head(3) |&gt; print()
 </div>
 <div id="a-more-complex-example" class="section level3">
 <h3>A more complex example:</h3>
-<pre class="r"><code>library(tidyverse)
-library(bio3d)
-library(fs)
+<pre class="r"><code>library(fibos)
 library(furrr)
-library(fibos)
 
 # source of PDB files
-folder &lt;- &quot;PDB&quot;
+pdb_folder &lt;- &quot;PDB&quot;
+
+# fibos folder output
+fibos_folder &lt;- &quot;fibos_files&quot;
 
 # Create PDB folder if it does not exist
-if (!dir.exists(folder)) fs::dir_create(folder)
+if (!fs::dir_exists(pdb_folder)) fs::dir_create(pdb_folder)
+
+# Prevent overwriting of fibos folder output
+if (fs::dir_exists(fibos_folder)) stop(paste(fibos_folder,&quot;exists, rename or remove it!&quot;))
 
 # PDB ids list
 pdb_ids = c(&quot;8RXN&quot;,&quot;1ROP&quot;) 
 
 # Get PDB files from RCSB and put them into the PDB folder 
-pdb_paths &lt;- pdb_ids |&gt; bio3d::get.pdb(path = folder) 
+pdb_paths &lt;- pdb_ids |&gt; bio3d::get.pdb(path = pdb_folder) 
 
 # Save default environment variable &quot;mc.cores&quot; to recover later
 my_default_mccores = getOption(&quot;mc.cores&quot;)
 
-# Detect number of physical cores and update &quot;mc.cores&quot;
-my_true_mccores = parallel::detectCores()
-options(mc.cores = my_true_mccores)
+# Detect number of physical cores and update &quot;mc.cores&quot; according to pdb_ids size
+my_ideal_mccores = min(parallel::detectCores(), length(pdb_ids))
+if (my_ideal_mccores &gt; 0) options(mc.cores = my_ideal_mccores)
 
 # Calculate in parallel FIBOS per atom per PDBid 
 # Create .srf files in fibos_files folder
 # Return FIBOS tables in pdb_fibos list
-plan(multisession, workers = my_true_mccores)
+if (my_ideal_mccores &gt; 1) future::plan(multisession, workers = my_ideal_mccores)
 pdb_fibos &lt;- pdb_paths |&gt; furrr::future_map(\(x) occluded_surface(x, method = &quot;FIBOS&quot;), 
-                                           .options = furrr_options(seed = 123))
+                                            .options = furrr_options(seed = 123))
 # Recover default &quot;mc.cores&quot;
-options(mc.cores = my_default_mccores)
+if (my_ideal_mccores &gt; 0) options(mc.cores = my_default_mccores)
 
 # Show first 3 rows of first pdb_fibos table
 pdb_fibos[[1]] |&gt; utils::head(3) |&gt; print()
 
 # Prepare paths for the generated .srf files in folder fibos_files
-srf_paths &lt;- pdb_ids |&gt; map(\(x) fs::path(&quot;fibos_files&quot;, paste0(&quot;prot_&quot;,x), 
+srf_paths &lt;- pdb_ids |&gt; purrr::map(\(x) fs::path(fibos_folder, paste0(&quot;prot_&quot;,x), 
                                           ext = &quot;srf&quot;)) |&gt; unlist()
 
 # Calculate OSP metric by residue
@@ -523,10 +526,7 @@ srf_paths &lt;- pdb_ids |&gt; map(\(x) fs::path(&quot;fibos_files&quot;, paste0(
 pdb_osp &lt;- srf_paths |&gt; purrr::map(\(x) osp(x))
 
 # Show first 3 rows of the first pdb_osp table
-pdb_osp[[1]] |&gt; utils::head(3) |&gt; print()
-
-# Rename the fibos_files folder to preserve it and prevent overwriting
-file.rename(&quot;fibos_files&quot;,&quot;fibos_files_test&quot;)</code></pre>
+pdb_osp[[1]] |&gt; utils::head(3) |&gt; print()</code></pre>
 </div>
 <div id="case-study" class="section level3">
 <h3>Case study:</h3>
