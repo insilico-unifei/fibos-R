@@ -373,20 +373,63 @@ Mac. However, it has been tested on the following versions:</p>
 <li><strong>Mac</strong>: MacOS 15.0.1</li>
 </ul>
 </div>
-<div id="instalation" class="section level2">
-<h2>Instalation</h2>
-<p>On Windows, install RTools:</p>
-<pre><code>https://cran.r-project.org/bin/windows/Rtools/</code></pre>
-<p>Also on Windows, set as administrator the PATH to the R bin folder:
-(x.x.x with the actual version number of your R installation)</p>
-<pre><code>setx PATH &quot;%PATH%;C:\Program Files\R\R-x.x.x\bin&quot;
+<div id="compilers" class="section level2">
+<h2>Compilers</h2>
+<ul>
+<li>gfortran (<span class="math inline">\(\geq\)</span> 9.4)</li>
+<li>gcc (<span class="math inline">\(\geq\)</span> 9.4)</li>
+</ul>
+</div>
+<div id="r-versions" class="section level2">
+<h2>R versions</h2>
+<p>Tested on: 4.4.1</p>
+</div>
+<div id="instalations" class="section level2">
+<h2>Instalations</h2>
+<div id="preliminary" class="section level3">
+<h3>Preliminary</h3>
+<p>Some preliminary actions according to OS:</p>
+<div id="linux-ubuntu" class="section level4">
+<h4>Linux (Ubuntu)</h4>
+<p>Install gfortran:</p>
+<pre class="bash"><code>$ sudo apt install gfortran</code></pre>
+</div>
+<div id="windows" class="section level4">
+<h4>Windows</h4>
+<p>Install RTools from:</p>
+<pre><code>https://cran.r-project.org/bin/windows/Rtools</code></pre>
+<p>Install gfortran from (version <span class="math inline">\(\geq\)</span> 13.2):</p>
+<pre><code>http://www.equation.com/servlet/equation.cmd?fa=fortran</code></pre>
+<p>Set the PATH to the R bin folder as an administrator:</p>
+<pre class="bash"><code>$ setx PATH &quot;%PATH%;C:\Program Files\R\R-x.x.x\bin&quot;
 </code></pre>
-<p>These additional packages may be required:</p>
-<pre><code>install.packages(&quot;tidyverse&quot;, &quot;bio3d&quot;, &quot;fs&quot;, &quot;furrr&quot;)</code></pre>
-<p>Install fibos:</p>
-<pre><code>install.packages(&quot;devtools&quot;&quot;)
+<p>where x.x.x is the actual version number of your R installation.</p>
+</div>
+<div id="macos" class="section level4">
+<h4>MacOS</h4>
+<p>Install Homebrew:</p>
+<pre class="bash"><code>$ /bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/
+HEAD/install.sh)”</code></pre>
+<p>In your shell, set the PATH to include the Homebrew bin folder by
+adding it into the .zshrc file</p>
+<pre><code>export PATH= &quot;/path/to/homebrew/bin:$PATH&quot;
+</code></pre>
+<p>where “/path/to/homebrew/bin” is the actual homebrew path in your
+system. So, reload it:</p>
+<pre class="bash"><code>$ source ~/.zshrc
+</code></pre>
+<p>Some Mac versions (with Apple Silicon) may require Rosetta:</p>
+<pre class="bash"><code>$ softwareupdate --install-rosetta --agree-to-license</code></pre>
+<p>Install xcode and gfortran from:</p>
+<pre class="bash"><code>https://cran.r-project.org/bin/macosx/tools/</code></pre>
+</div>
+</div>
+<div id="install-fibos" class="section level3">
+<h3>Install fibos:</h3>
+<pre class="r"><code>install.packages(&quot;devtools&quot;)
 library(&quot;devtools&quot;)
 install_github(&quot;https://github.com/insilico-unifei/fibos-R.git&quot;) </code></pre>
+</div>
 </div>
 <div id="main-functions" class="section level2">
 <h2>Main functions:</h2>
@@ -420,7 +463,7 @@ pdb_fibos |&gt; utils::head(3) |&gt; print()
 # 3 GLN    1@N___&gt;HIS   3@CG__             1  0.16     0.991     6.27
 
 # Calculate OSP metric per residue from .srf file in fibos_files folder
-pdb_osp &lt;- osp(&quot;fibos_files/prot_1fib.srf&quot;)
+pdb_osp &lt;- osp(fs::path(&quot;fibos_files&quot;,&quot;prot_1fib.srf&quot;))
 
 # Show first 3 rows of pdb_osp table
 pdb_osp |&gt; utils::head(3) |&gt; print()
@@ -434,45 +477,48 @@ pdb_osp |&gt; utils::head(3) |&gt; print()
 </div>
 <div id="a-more-complex-example" class="section level3">
 <h3>A more complex example:</h3>
-<pre class="r"><code>library(tidyverse)
-library(bio3d)
-library(fs)
+<pre class="r"><code>library(fibos)
 library(furrr)
-library(fibos)
 
 # source of PDB files
-folder &lt;- &quot;PDB&quot;
+pdb_folder &lt;- &quot;PDB&quot;
+
+# fibos folder output
+fibos_folder &lt;- &quot;fibos_files&quot;
 
 # Create PDB folder if it does not exist
-if (!dir.exists(folder)) fs::dir_create(folder)
+if (!fs::dir_exists(pdb_folder)) fs::dir_create(pdb_folder)
+
+# Prevent overwriting of fibos folder output
+if (fs::dir_exists(fibos_folder)) stop(paste(fibos_folder,&quot;exists, rename or remove it!&quot;))
 
 # PDB ids list
 pdb_ids = c(&quot;8RXN&quot;,&quot;1ROP&quot;) 
 
 # Get PDB files from RCSB and put them into the PDB folder 
-pdb_paths &lt;- pdb_ids |&gt; bio3d::get.pdb(path = folder) 
+pdb_paths &lt;- pdb_ids |&gt; bio3d::get.pdb(path = pdb_folder) 
 
 # Save default environment variable &quot;mc.cores&quot; to recover later
 my_default_mccores = getOption(&quot;mc.cores&quot;)
 
-# Detect number of physical cores and update &quot;mc.cores&quot;
-my_true_mccores = parallel::detectCores()
-options(mc.cores = my_true_mccores)
+# Detect number of physical cores and update &quot;mc.cores&quot; according to pdb_ids size
+my_ideal_mccores = min(parallel::detectCores(), length(pdb_ids))
+if (my_ideal_mccores &gt; 0) options(mc.cores = my_ideal_mccores)
 
 # Calculate in parallel FIBOS per atom per PDBid 
 # Create .srf files in fibos_files folder
 # Return FIBOS tables in pdb_fibos list
-plan(multisession, workers = my_true_mccores)
+if (my_ideal_mccores &gt; 1) future::plan(multisession, workers = my_ideal_mccores)
 pdb_fibos &lt;- pdb_paths |&gt; furrr::future_map(\(x) occluded_surface(x, method = &quot;FIBOS&quot;), 
-                                           .options = furrr_options(seed = 123))
+                                            .options = furrr_options(seed = 123))
 # Recover default &quot;mc.cores&quot;
-options(mc.cores = my_default_mccores)
+if (my_ideal_mccores &gt; 0) options(mc.cores = my_default_mccores)
 
 # Show first 3 rows of first pdb_fibos table
 pdb_fibos[[1]] |&gt; utils::head(3) |&gt; print()
 
 # Prepare paths for the generated .srf files in folder fibos_files
-srf_paths &lt;- pdb_ids |&gt; map(\(x) fs::path(&quot;fibos_files&quot;, paste0(&quot;prot_&quot;,x), 
+srf_paths &lt;- pdb_ids |&gt; purrr::map(\(x) fs::path(fibos_folder, paste0(&quot;prot_&quot;,x), 
                                           ext = &quot;srf&quot;)) |&gt; unlist()
 
 # Calculate OSP metric by residue
@@ -480,10 +526,7 @@ srf_paths &lt;- pdb_ids |&gt; map(\(x) fs::path(&quot;fibos_files&quot;, paste0(
 pdb_osp &lt;- srf_paths |&gt; purrr::map(\(x) osp(x))
 
 # Show first 3 rows of the first pdb_osp table
-pdb_osp[[1]] |&gt; utils::head(3) |&gt; print()
-
-# Rename the fibos_files folder to preserve it and prevent overwriting
-file.rename(&quot;fibos_files&quot;,&quot;fibos_files_test&quot;)</code></pre>
+pdb_osp[[1]] |&gt; utils::head(3) |&gt; print()</code></pre>
 </div>
 <div id="case-study" class="section level3">
 <h3>Case study:</h3>
