@@ -2,9 +2,10 @@
 % Please edit documentation in R/folders_manipulate.R
 \name{create_folder}
 \alias{create_folder}
+\alias{change_files}
 \title{Files Manipulating.}
 \usage{
-create_folder(pdbname)
+change_files(pdb_name)
 }
 \description{
 Function for creating folders and manipulating files in the FIBOS system.
