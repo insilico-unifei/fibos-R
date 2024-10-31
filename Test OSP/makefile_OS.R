@@ -1,5 +1,5 @@
 #library(os)
-library(FIBOS)
+library(fibos)
 library(readr)
 library(dplyr)
 library(tidyr)

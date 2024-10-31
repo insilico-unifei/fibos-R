@@ -25,6 +25,9 @@
 #' @export
 osp = function(file){
   wd = fs::path_wd()
+  if(!fs::dir_exists("fibos_files")){
+    fs::dir_create("fibos_files")
+  }
   if(fs::path_ext(file) == ""){
     file = fs::path_ext_set(file,"srf")
   }
@@ -67,6 +70,8 @@ osp = function(file){
     fs::file_move("prot.pak",file)
     remove_file = fs::dir_ls(glob = "*.srf")
     fs::file_delete(remove_file)
+    fs::file_copy(file,"fibos_files")
+    fs::file_delete(file)
     return(osp_data)
   }
   else{

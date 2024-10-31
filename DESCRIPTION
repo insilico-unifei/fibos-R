@@ -1,6 +1,6 @@
 Package: fibos
 Title: fibos
-Version: 1.0.0.8
+Version: 1.0.0.9
 Authors@R: c(
             person("Carlos", "Silveira", email = "carlos.silveira@unifei.edu.br", role = "cre"),
             person("Herson", "Hebert", email = "hersonhebert@hotmail.com", role = "aut"),
@@ -16,7 +16,7 @@ Depends: R (>= 3.3.0)
 License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports: 
     bio3d,
     dplyr,

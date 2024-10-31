@@ -4,7 +4,7 @@
 \alias{occluded_surface}
 \title{Calcule the Surface}
 \usage{
-occluded_surface(pdb, method = "FIBOS")
+occluded_surface(pdb, method = "FIBOS", verbose = FALSE)
 }
 \arguments{
 \item{pdb}{Input containing only the name of the 4-digit PDB file, the file will be obtained online. If there is an extension ".pdb" or full path, the file will be obtained locally.}
