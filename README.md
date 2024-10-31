@@ -180,7 +180,7 @@ my_default_mccores = getOption("mc.cores")
 my_ideal_mccores = min(parallel::detectCores(), length(pdb_ids))
 if (my_ideal_mccores > 0) options(mc.cores = my_ideal_mccores)
 
-# Calculate in parallel FIBOS per atom per PDBid 
+# Calculate in parallel FIBOS per PDBid 
 # Create .srf files in fibos_files folder
 # Return FIBOS tables in pdb_fibos list
 if (my_ideal_mccores > 1) future::plan(multisession, workers = my_ideal_mccores)
