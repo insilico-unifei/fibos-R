@@ -70,7 +70,7 @@ osp = function(file){
     fs::file_move("prot.pak",file)
     remove_file = fs::dir_ls(glob = "*.srf")
     fs::file_delete(remove_file)
-    fs::file_copy(file,"fibos_files")
+    fs::file_copy(file,"fibos_files", overwrite = TRUE)
     fs::file_delete(file)
     return(osp_data)
   }
