@@ -175,20 +175,20 @@ pdb_paths <- pdb_ids |> bio3d::get.pdb(path = pdb_folder)
 pdb_paths |> print()
 
 # Save default environment variable "mc.cores" to recover later
-my_default_cores = getOption("mc.cores")
+default_cores = getOption("mc.cores")
 
 # Detect number of physical cores and update "mc.cores" according to pdb_ids size
-my_ideal_cores = min(parallel::detectCores(), length(pdb_ids))
-if (my_ideal_cores > 0) options(mc.cores = my_ideal_cores)
+ideal_cores = min(parallel::detectCores(), length(pdb_ids))
+if (ideal_cores > 0) options(mc.cores = ideal_cores)
 
 # Calculate in parallel FIBOS per PDBid 
 # Create .srf files in fibos_files folder
 # Return FIBOS tables in pdb_fibos list
-if (my_ideal_cores > 1) future::plan(multisession, workers = my_ideal_cores)
+if (ideal_cores > 1) future::plan(multisession, workers = ideal_cores)
 pdb_fibos <- pdb_paths |> furrr::future_map(\(x) occluded_surface(x, method = "FIBOS"), 
                                             .options = furrr_options(seed = 123))
 # Recover default "mc.cores"
-if (my_ideal_cores > 0) options(mc.cores = my_default_cores)
+if (ideal_cores > 0) options(mc.cores = default_cores)
 
 # Show first 3 rows of first pdb_fibos table
 pdb_fibos[[1]] |> utils::head(3) |> print()
