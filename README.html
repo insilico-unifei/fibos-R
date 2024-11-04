@@ -502,10 +502,10 @@ pdb_paths &lt;- pdb_ids |&gt; bio3d::get.pdb(path = pdb_folder)
 pdb_paths |&gt; print()
 
 # Save default environment variable &quot;mc.cores&quot; to recover later
-default_cores = getOption(&quot;mc.cores&quot;)
+default_cores &lt;- getOption(&quot;mc.cores&quot;)
 
 # Detect number of physical cores and update &quot;mc.cores&quot; according to pdb_ids size
-ideal_cores = min(parallel::detectCores(), length(pdb_ids))
+ideal_cores &lt;- min(parallel::detectCores(), length(pdb_ids))
 if (ideal_cores &gt; 0) options(mc.cores = ideal_cores)
 
 # Calculate in parallel FIBOS per PDBid 
