@@ -491,9 +491,6 @@ fibos_folder &lt;- &quot;fibos_files&quot;
 # Create PDB folder if it does not exist
 if (!fs::dir_exists(pdb_folder)) fs::dir_create(pdb_folder)
 
-# Prevent overwriting of fibos folder output
-if (fs::dir_exists(fibos_folder)) stop(paste(fibos_folder,&quot;exists, rename or remove it!&quot;))
-
 # PDB ids list
 pdb_ids = c(&quot;8RXN&quot;,&quot;1ROP&quot;) |&gt; tolower()
 
