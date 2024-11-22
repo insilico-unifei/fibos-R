@@ -1,27 +1,43 @@
-#' @title Calcule the Surface
+#' @title Occluded Surface (OS)
 #' @name occluded_surface
 #'
-#' @description The calculation of occluded surface areas is essential for
-#'              understanding the possibility of an enzyme passing between atoms
-#'              of a protein. To perform the calculation, it is considered that
-#'              a surface is occluded based on tests with a probe, which is
-#'              typically the water molecule.
+#' @description The Occluded Surface (OS) algorithm is a widely used approach for analyzing atomic packing in biomolecules. Here, we introduce FIBOS, an R and Python package that extends the OS methodology with enhancements. The homonymous function occluded_surface calculates OS per atom.
 #'
-#' @param pdb Input containing only the name of the 4-digit PDB file, the file will be obtained online. If there is an extension ".pdb" or full path, the file will be obtained locally.
-#' @param method Method to be used: OS or FIBOS
+#' @param pdb 4-digit PDB id (will fetch it from the RCSB repository) or the path to a PDB local file.
+#' @param method Method to be used: OS (classic) or FIBOS (default).The classic OS covers the surface radially with one of the axes as a reference when allocating the dots. In FIBOS, Fibonacci spirals were used to allocate the dots, which is known to produce lower axial anisotropy as well as more evenly spaced points on a sphere.
+#' @param verbose only for debugging.
 #'
-#' @seealso [read_prot()]
-#' @seealso [read_osp()]
-#' @seealso [osp()]
+#' @details
+#' Occluded Surface (OS) (Pattabiraman et al. 1995) method distributes dots (representing patches of area) across the atom surfaces. Each dot has a normal that extends until it reaches either a van der Waals surface of a neighboring atom (the dot is considered occluded) or covers a distance greater than the diameter of a water molecule (the dot is considered non-occluded and disregarded). Thus, with the summed areas of dots and the lengths of normals, it is possible to compose robust metrics capable of inferring the average packing density of atoms, residues, proteins, as well as any other group of biomolecules.
 #'
-#' @importFrom stringr str_sub
-#' @importFrom withr with_tempdir
-#' @importFrom bio3d read.pdb
+#' For more details, see (Fleming et al, 2000) and (Soares, et al, 2024)
 #'
-#' @author Carlos Henrique da Silveira (carlos.silveira@unifei.edu.br)
-#' @author Herson Hebert Mendes Soares (hersonhebert@hotmail.com)
-#' @author João Paulo Roquim Romanelli (joaoromanelli@unifei.edu.br)
-#' @author Patrick Fleming (Pat.Fleming@jhu.edu)
+#' @return A table containing:
+#' 	\item{\code{ATOM}}{the atomic contacts for each atom.}
+#' 	\item{\code{NUMBER OF POINTS}}{the number of dots (patches of area) on atomic surface.}
+#' 	\item{\code{AREA}}{the summed areas of dots.}
+#'  \item{\code{RAYLENGTH}}{the average lengths of normals normalized by 2.8 Å (water diameter). So, raylen is a value between 0 and 1. A raylen close to 1 indicates worse packaging.}
+#'  \item{\code{DISTANCE}}{the average distances of contacts in (Å).}
+#'
+#' @seealso [osp]
+#'
+#' @author Herson Soares, João Romanelli, Patrick Fleming, Carlos Silveira.
+#'
+#' @references
+#' Fleming PJ, Richards FM. Protein packing: Dependence on protein size, secondary structure and amino acid composition. J Mol Biol 2000;299:487–98.(\url{https://doi.org/10.1006/jmbi.2000.3750})
+#'
+#' Pattabiraman N, Ward KB, Fleming PJ. Occluded molecular surface: Analysis of protein packing. J Mol Recognit 1995;8:334–44. (\url{https://doi.org/10.1002/jmr.300080603})
+#'
+#' Herson H. M. Soares, João P. R. Romanelli, Patrick J. Fleming, Carlos H. da Silveira. bioRxiv, 2024.11.01.621530. (\url{https://doi.org/10.1101/2024.11.01.621530})
+#'
+#' @examples
+#' library(fibos)
+#'
+#' # Calculate FIBOS per atom and create .srf files in fibos_files folder
+#' pdb_fibos <- occluded_surface("1fib", method = "FIBOS")
+#'
+#' # Calculate OSP metric per residue from .srf file in fibos_files folder
+#' pdb_osp <- osp(fs::path("fibos_files","prot_1fib.srf"))
 #'
 #' @export
 occluded_surface = function(pdb, method = "FIBOS", verbose = FALSE){
