@@ -89,18 +89,18 @@ osp = function(file){
   }
 }
 
-#' @title Read OSP Value
-#' @name osp
-#'
-#' @description The OSP value is important for verifying the quality of the values
-#'              calculated by the developed package for calculating the contact
-#'                areas between the molecules of the analyzed protein.
-#'
-#' @param prot_file OSP File (.pak).
-#'
-#' @importFrom readr read_table
-#'
-#'
+# #' @title Read OSP Value
+# #' @name osp
+# #'
+# #' @description The OSP value is important for verifying the quality of the values
+# #'              calculated by the developed package for calculating the contact
+# #'                areas between the molecules of the analyzed protein.
+# #'
+# #' @param prot_file OSP File (.pak).
+# #'
+# #' @importFrom readr read_table
+# #'
+# #'
 read_osp = function(prot_file){
   if (endsWith(prot_file, ".pak") == FALSE){
     prot_file = paste(prot_file,".pak",sep = "")
