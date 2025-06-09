@@ -1,6 +1,6 @@
 ---
-editor_options: 
-  markdown: 
+editor_options:
+  markdown:
     wrap: sentence
 ---
 
@@ -13,7 +13,7 @@ the use of Fibonacci spirals for surface point distribution. This modification r
 ensures a more uniform and even distribution of surface dots, improving the accuracy
 of the algorithm.
 
-**CRAN R FIBOS PACKAGE:**\
+**CRAN R FIBOS PACKAGE:**  \
 https://cran.r-project.org/web/packages/fibos/index.html \
 
 For **Python fibos** version: \
