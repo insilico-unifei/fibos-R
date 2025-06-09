@@ -102,13 +102,15 @@ Install xcode and gfortran from:
 https://cran.r-project.org/bin/macosx/tools/
 ```
 
-### CRAN install fibos (recommended):
+### FIBOS INSTALLATION ###
+
+#### From CRAN install (recommended):
 
 ```R
 install.packages("fibos")
 ```
 
-### GitHub install fibos:
+#### From GitHub install:
 
 ```R
 install.packages("devtools")
